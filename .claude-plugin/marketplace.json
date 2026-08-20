@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace-manifest.json",
+  "name": "agentkit",
+  "owner": {
+    "name": "jtlgrowth",
+    "url": "https://github.com/jtlgrowth"
+  },
+  "description": "JTL AgentKit, installable as a Claude Code plugin.",
+  "plugins": [
+    {
+      "name": "agentkit",
+      "source": "./",
+      "description": "Curated agents and skills for Claude Code, distilled from ruflo and audited — zero dependencies, no postinstall.",
+      "license": "MIT",
+      "keywords": ["agents", "skills", "claude-code", "multi-agent", "ruflo", "claude-flow"]
+    }
+  ]
+}
