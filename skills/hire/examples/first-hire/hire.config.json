@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "preset": "first-hire",
+  "org": "{{org}}",
+  "description": "Written by /hire init for a first hire. Roster truth is ./roster.json in this folder. Everything the employee is lives next to this file: .claude/agents/<name>.md is the employee, docs/team/<name>.md is the job description you can read.",
+  "vars": { "root": "." },
+  "roster": {
+    "members":  { "path": "{{root}}/roster.json", "pointer": "/agents" },
+    "keywords": { "path": "{{root}}/roster.json", "pointer": "/routes" }
+  },
+  "requires": [
+    "name", "role", "owns", "description", "keywords", "model", "tools.allow",
+    "inputs", "outputs", "nevers", "qa", "unattended", "firstShift", "metric"
+  ],
+  "jobDoc": {
+    "surface": "job-doc",
+    "requiredSections": ["Job:", "Boundaries", "First shift"]
+  },
+  "surfaces": [
+    {
+      "id": "job-doc",
+      "op": "file-from-template",
+      "path": "{{root}}/docs/team/{{name}}.md",
+      "template": "job-doc-first-hire.md"
+    },
+    {
+      "id": "subagent",
+      "op": "file-from-template",
+      "path": "{{root}}/.claude/agents/{{name}}.md",
+      "template": "subagent-first-hire.md"
+    },
+    {
+      "id": "roster-member",
+      "op": "json-set",
+      "path": "{{root}}/roster.json",
+      "pointer": "/agents/-",
+      "value": "{{name}}"
+    },
+    {
+      "id": "roster-route",
+      "op": "json-set",
+      "path": "{{root}}/roster.json",
+      "pointer": "/routes/{{name}}",
+      "value": { "label": "{{label}}", "keywords": "{{keywords}}" }
+    }
+  ],
+  "guards": [
+    {
+      "id": "route-parity",
+      "type": "set-equality",
+      "a": { "path": "{{root}}/roster.json", "pointer": "/agents", "kind": "array" },
+      "b": { "path": "{{root}}/roster.json", "pointer": "/routes", "kind": "keys" },
+      "message": "an employee listed in agents with no routes entry is invisible to the next hire's overlap check"
+    }
+  ],
+  "verify": [
+    "node \"{{skillDir}}/scripts/verify-roster.mjs\" --config \"{{root}}/hire.config.json\" --name {{name}}"
+  ]
+}

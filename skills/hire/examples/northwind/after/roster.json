@@ -1,0 +1,48 @@
+{
+  "org": "Northwind Robotics",
+  "agents": [
+    "mila",
+    "otto",
+    "tess"
+  ],
+  "routes": {
+    "mila": {
+      "label": "Support",
+      "skill": "mila",
+      "keywords": [
+        "ticket",
+        "refund",
+        "customer",
+        "support",
+        "escalation",
+        "sla",
+        "churn"
+      ]
+    },
+    "otto": {
+      "label": "Docs",
+      "skill": "otto",
+      "keywords": [
+        "docs",
+        "changelog",
+        "release notes",
+        "api reference",
+        "tutorial",
+        "guide"
+      ]
+    },
+    "tess": {
+      "label": "Partnerships",
+      "skill": "tess",
+      "keywords": [
+        "partnership",
+        "affiliate",
+        "reseller",
+        "co-marketing",
+        "integration partner",
+        "revenue share",
+        "referral"
+      ]
+    }
+  }
+}

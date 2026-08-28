@@ -1,0 +1,4 @@
+interface:
+  display_name: "Hire an AI Employee"
+  short_description: "Create a complete AI employee without roster drift"
+  default_prompt: "Use $hire to help me hire my first AI employee."

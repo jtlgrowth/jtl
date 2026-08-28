@@ -1,0 +1,20 @@
+{
+  "agents": [
+    "maya"
+  ],
+  "routes": {
+    "maya": {
+      "label": "Enquiry Desk",
+      "keywords": [
+        "enquiry",
+        "message",
+        "reply",
+        "booking",
+        "menu",
+        "hours",
+        "allergen",
+        "customer question"
+      ]
+    }
+  }
+}

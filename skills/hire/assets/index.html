@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>hire — what a hire actually looks like</title>
+<style>
+  :root {
+    --bg:#faf7f2; --fg:#1a1613; --dim:#6b6259; --line:#e2dbd0;
+    --card:#fffdfa; --accent:#b3362a; --code:#f3ece2;
+  }
+  @media (prefers-color-scheme:dark) {
+    :root { --bg:#14110e; --fg:#f5f1ea; --dim:#9a9188; --line:#2c2622;
+             --card:#1c1815; --accent:#f2705f; --code:#221d19; }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); line-height:1.65;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,sans-serif;
+    padding:56px 24px 96px; }
+  main { max-width:920px; margin:0 auto; }
+  h1 { font-size:clamp(2rem,5vw,2.9rem); letter-spacing:-.02em; margin:0 0 .3em; }
+  h2 { font-size:1.35rem; margin:3.2em 0 .6em; letter-spacing:-.01em; }
+  .lede { font-size:1.15rem; color:var(--dim); max-width:62ch; }
+  p { max-width:68ch; }
+  a { color:var(--accent); }
+  figure { margin:1.6em 0 0; }
+  figure img { width:100%; height:auto; display:block; border-radius:10px;
+    border:1px solid var(--line); }
+  figcaption { color:var(--dim); font-size:.9rem; margin-top:.7em; max-width:68ch; }
+  .cols { display:grid; grid-template-columns:1fr; gap:18px; margin-top:1.4em; }
+  @media (min-width:760px) { .cols { grid-template-columns:1fr 1fr; } }
+  pre { background:var(--code); border:1px solid var(--line); border-radius:10px;
+    padding:16px 18px; overflow-x:auto; font-size:12.5px; line-height:1.55;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace; margin:0; }
+  .label { font-size:.78rem; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--dim); margin-bottom:.5em; }
+  .rule { border:0; border-top:1px solid var(--line); margin:4em 0 0; }
+  .foot { color:var(--dim); font-size:.92rem; margin-top:2em; }
+</style>
+</head>
+<body>
+<main>
+
+<h1>What a hire actually looks like</h1>
+<p class="lede">Adding an agent to a team is never one file. <code>hire</code> asks twelve
+questions, shows every write, and then writes all of it or none of it. Everything on this
+page is real output from the fictional <a href="../examples/northwind/transcript.md">Northwind
+Robotics</a> demo — no mockups.</p>
+
+<h2>1. Preview — nothing has touched the disk</h2>
+<figure>
+  <img src="../../../docs/screenshots/preview.svg" alt="Terminal output listing five writes across four files, a skipped optional surface, and a passing route-parity guard">
+  <figcaption>Five operations across four files, one optional surface skipped with its
+  reason, and the guard that has to pass before any of it is allowed to happen.</figcaption>
+</figure>
+
+<h2>2. Every change, as a diff</h2>
+<figure>
+  <img src="../../../docs/screenshots/diff.svg" alt="Unified diff showing the new agent appended to the roster array and a new route object added">
+  <figcaption>The operator approves a diff, not a promise. Hand-formatted files keep their
+  formatting — the insert is anchored, not a whole-file rewrite.</figcaption>
+</figure>
+
+<h2>3. What refusal looks like</h2>
+<figure>
+  <img src="../../../docs/screenshots/refused.svg" alt="Terminal output reading REFUSED, nothing written, with the route-parity guard failure explained">
+  <figcaption>The same hire with one surface removed from the config — an agent added to
+  the member list with no matching route. The guard runs against staged content, so the
+  refusal costs nothing. <strong>Zero files written.</strong></figcaption>
+</figure>
+
+<h2>4. The job description it generates</h2>
+<p>Ten labelled sections, including the four nobody writes voluntarily: what it refuses,
+who reviews it, what it does with nobody awake, and what would make you fold the seat.</p>
+<pre># Tess — Partnerships
+
+**Desk:** ACTIVE
+
+**Runtime:** sonnet / medium effort
+
+**Job:** every partner relationship reaching a yes or a no within two weeks, and nothing sitting in limbo after that.
+
+**Inputs → outputs:** inbound partner enquiries, the reseller pipeline, and existing partner performance data → a qualified/declined verdict per partner with terms, and a weekly aged-deal list.
+
+**Routed when:** anything naming a partner, reseller, affiliate, referral or co-marketing deal — including a partner complaint.
+
+**Quality bar:** every verdict names the revenue number it turns on and the date it expires. Reviewed by: Priya.
+
+**Boundaries:** recommends terms, never countersigns them. Never, even when asked: signs a contract, commits an engineering date, offers a discount outside the published rate card.
+
+**Escalation:** anything above $10k annual value or touching exclusivity goes to Priya before the partner hears an answer. With no human awake: records the verdict as PENDING-HUMAN with the reason and stops — a partner never receives an unreviewed commitment.
+
+**Cadence:** reactive — no standing motor; runs on routed work only.
+
+**Earns the seat when:** aged deals over 14 days trend to zero and partner-sourced revenue is attributable by source.
+
+**Folded when:** fold into Growth if partner-sourced revenue stays under 5% of total for two consecutive quarters.
+
+&lt;!-- hired 2026-08-20 via /hire --&gt;
+</pre>
+
+<h2>5. The roster, before and after</h2>
+<div class="cols">
+  <div><div class="label">before</div><pre>{
+  &quot;org&quot;: &quot;Northwind Robotics&quot;,
+  &quot;agents&quot;: [
+    &quot;mila&quot;,
+    &quot;otto&quot;
+  ],
+  &quot;routes&quot;: {
+    &quot;mila&quot;: {
+      &quot;label&quot;: &quot;Support&quot;,
+      &quot;skill&quot;: &quot;mila&quot;,
+      &quot;keywords&quot;: [&quot;ticket&quot;, &quot;refund&quot;, &quot;customer&quot;, &quot;support&quot;, &quot;escalation&quot;, &quot;sla&quot;, &quot;churn&quot;]
+    },
+    &quot;otto&quot;: {
+      &quot;label&quot;: &quot;Docs&quot;,
+      &quot;skill&quot;: &quot;otto&quot;,
+      &quot;keywords&quot;: [&quot;docs&quot;, &quot;changelog&quot;, &quot;release notes&quot;, &quot;api reference&quot;, &quot;tutorial&quot;, &quot;guide&quot;]
+    }
+  }
+}
+</pre></div>
+  <div><div class="label">after</div><pre>{
+  &quot;org&quot;: &quot;Northwind Robotics&quot;,
+  &quot;agents&quot;: [
+    &quot;mila&quot;,
+    &quot;otto&quot;,
+    &quot;tess&quot;
+  ],
+  &quot;routes&quot;: {
+    &quot;mila&quot;: {
+      &quot;label&quot;: &quot;Support&quot;,
+      &quot;skill&quot;: &quot;mila&quot;,
+      &quot;keywords&quot;: [
+        &quot;ticket&quot;,
+        &quot;refund&quot;,
+        &quot;customer&quot;,
+        &quot;support&quot;,
+        &quot;escalation&quot;,
+        &quot;sla&quot;,
+        &quot;churn&quot;
+      ]
+    },
+    &quot;otto&quot;: {
+      &quot;label&quot;: &quot;Docs&quot;,
+      &quot;skill&quot;: &quot;otto&quot;,
+      &quot;keywords&quot;: [
+        &quot;docs&quot;,
+        &quot;changelog&quot;,
+        &quot;release notes&quot;,
+        &quot;api reference&quot;,
+        &quot;tutorial&quot;,
+        &quot;guide&quot;
+      ]
+    },
+    &quot;tess&quot;: {
+      &quot;label&quot;: &quot;Partnerships&quot;,
+      &quot;skill&quot;: &quot;tess&quot;,
+      &quot;keywords&quot;: [
+        &quot;partnership&quot;,
+        &quot;affiliate&quot;,
+        &quot;reseller&quot;,
+        &quot;co-marketing&quot;,
+        &quot;integration partner&quot;,
+        &quot;revenue share&quot;,
+        &quot;referral&quot;
+      ]
+    }
+  }
+}
+</pre></div>
+</div>
+
+<hr class="rule">
+<p class="foot">hire is an <a href="https://github.com/anthropics/skills">Agent Skill</a> —
+Markdown and dependency-free Node. MIT.
+<a href="https://github.com/jtlgrowth/hire">Source on GitHub</a>.</p>
+
+</main>
+</body>
+</html>

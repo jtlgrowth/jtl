@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>securitymaxx — scorecard gallery</title>
+<style>
+  :root{
+    --paper:#faf7f2; --card:#ffffff; --ink:#1a1613; --muted:#8a8378; --line:#e8e2d8;
+    --accent:#b3362a; --pass:#1d7a4c;
+    --font-sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Inter,Roboto,sans-serif;
+    --font-mono:"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--paper:#14110e;--card:#1c1815;--ink:#f5f1ea;--muted:#8d857a;--line:#2e2822;
+          --accent:#f2705f;--pass:#4ec48a;}
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:var(--font-sans);background:var(--paper);color:var(--ink);
+       padding:56px 32px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1180px;margin:0 auto;}
+  .kicker{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+  h1{font-size:42px;font-weight:800;letter-spacing:-.025em;margin-bottom:10px;}
+  .lede{font-size:16px;color:var(--muted);max-width:66ch;margin-bottom:14px;}
+  .repo{font-size:14px;margin-bottom:32px;}
+  .repo a{color:var(--accent);}
+  .tabs{display:flex;gap:8px;margin-bottom:26px;flex-wrap:wrap;}
+  .tab{font:inherit;font-size:13px;font-weight:700;letter-spacing:.02em;cursor:pointer;
+       background:var(--card);color:var(--muted);border:1px solid var(--line);
+       border-radius:999px;padding:9px 18px;}
+  .tab[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+        display:flex;flex-direction:column;}
+  .shot{height:250px;overflow:hidden;border-bottom:1px solid var(--line);background:var(--paper);}
+  .shot iframe{width:1180px;height:1180px;border:0;transform:scale(.3);transform-origin:0 0;
+               pointer-events:none;}
+  .meta{padding:16px 18px 18px;}
+  .meta h2{font-size:16px;font-weight:800;letter-spacing:-.01em;margin-bottom:4px;}
+  .meta h2 a{color:inherit;text-decoration:none;}
+  .meta h2 a:hover{color:var(--accent);}
+  .meta p{font-size:13px;color:var(--muted);line-height:1.55;}
+  .score{font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--muted);
+         margin-top:9px;display:block;}
+  .foot{margin-top:40px;padding-top:22px;border-top:1px solid var(--line);
+        font-size:12.5px;color:var(--muted);line-height:1.75;max-width:78ch;}
+  .foot a{color:var(--accent);}
+  @media (max-width:900px){
+    body{padding:34px 18px;}
+    h1{font-size:31px;}
+    .grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">securitymaxx · scorecard gallery</div>
+  <h1>What a securitymaxx report looks like</h1>
+  <p class="lede">Three demo audits and one blank template. Every scorecard is a single
+  self-contained HTML file — no build step, no JavaScript, no external requests — so it opens
+  straight from disk and survives being emailed.</p>
+  <p class="repo"><a href="https://github.com/jtlgrowth/securitymaxx">github.com/jtlgrowth/securitymaxx</a>
+  &nbsp;·&nbsp; MIT</p>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true"  data-variant="">Minimal light</button>
+    <button class="tab" role="tab" aria-selected="false" data-variant="-dark">Minimal dark</button>
+    <button class="tab" role="tab" aria-selected="false" data-variant="-full">Full editorial</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="foot">
+    The three audited applications are <b>fictional</b>. They were invented to show what each kind
+    of stack produces — a maintained SaaS, an AI-generated app that shipped without review, and a
+    no-code setup where most checks belong to the vendor. Publishing a real company's failing
+    scorecard would be a different kind of document, and not one worth making.
+    <br><br>
+    Blank templates: <a href="template.html">light</a> ·
+    <a href="template-dark.html">dark</a> ·
+    <a href="template-full.html">full editorial</a>
+  </div>
+</div>
+
+<script>
+  const ITEMS = [
+    { key: 'saas', title: 'Northwind Metrics',
+      desc: 'Maintained B2B SaaS. Next.js + Supabase on Vercel. Shows what PLATFORM rows look like when the setting was actually read.',
+      score: '9.5 / 10 · holding' },
+    { key: 'vibecode', title: 'PetPal Booking',
+      desc: 'AI-generated app, live with real customers. Master database key in the browser bundle, plaintext staff passwords, no backups.',
+      score: '3 / 10 · lock in tonight' },
+    { key: 'platform', title: 'Harbourline Studio',
+      desc: 'No-code site plus a hosted course platform. Six checks belong to the vendors — one could not be verified, so it scores zero.',
+      score: '6.5 / 10 · config review' },
+  ];
+
+  const grid = document.getElementById('grid');
+
+  function render(variant) {
+    grid.innerHTML = ITEMS.map(function (it) {
+      const file = 'example-' + it.key + variant + '.html';
+      return '<div class="card">' +
+        '<div class="shot"><iframe src="' + file + '" loading="lazy" title="' + it.title + ' scorecard"></iframe></div>' +
+        '<div class="meta"><h2><a href="' + file + '">' + it.title + '</a></h2>' +
+        '<p>' + it.desc + '</p>' +
+        '<span class="score">' + it.score + '</span></div></div>';
+    }).join('');
+  }
+
+  document.querySelectorAll('.tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      document.querySelectorAll('.tab').forEach(function (t) {
+        t.setAttribute('aria-selected', String(t === tab));
+      });
+      render(tab.dataset.variant);
+    });
+  });
+
+  render('');
+</script>
+</body>
+</html>

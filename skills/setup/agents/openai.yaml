@@ -1,0 +1,4 @@
+interface:
+  display_name: "Setup your AI COO"
+  short_description: "Name and configure your AI chief of staff"
+  default_prompt: "Use $setup to configure my AI chief of staff."

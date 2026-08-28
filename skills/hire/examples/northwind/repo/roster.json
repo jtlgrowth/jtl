@@ -1,0 +1,19 @@
+{
+  "org": "Northwind Robotics",
+  "agents": [
+    "mila",
+    "otto"
+  ],
+  "routes": {
+    "mila": {
+      "label": "Support",
+      "skill": "mila",
+      "keywords": ["ticket", "refund", "customer", "support", "escalation", "sla", "churn"]
+    },
+    "otto": {
+      "label": "Docs",
+      "skill": "otto",
+      "keywords": ["docs", "changelog", "release notes", "api reference", "tutorial", "guide"]
+    }
+  }
+}
