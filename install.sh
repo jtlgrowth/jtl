@@ -11,8 +11,8 @@
 #
 set -euo pipefail
 
-MARKETPLACE="jtlgrowth/agentkit"
-PLUGIN="agentkit@agentkit"
+MARKETPLACE="jtlgrowth/jtl"
+PLUGIN="jtl@jtl"
 DOCS_URL="https://claude.com/claude-code"
 
 say()  { printf '%s\n' "$*"; }

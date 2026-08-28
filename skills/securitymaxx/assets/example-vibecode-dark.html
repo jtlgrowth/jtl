@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Securitymaxx · PetPal Booking (dark)</title>
+<style>
+  :root{
+    --paper:#faf7f2; --card:#ffffff; --ink:#1a1613; --muted:#8a8378; --line:#e8e2d8;
+    --pass:#1d7a4c; --pass-bg:#e3f2e9; --fail:#b3362a; --fail-bg:#fae7e4;
+    --warn:#b07816; --warn-bg:#f7edd8; --platform:#3a5a9b; --platform-bg:#e8ecf5;
+    --unknown:#6f6961; --unknown-bg:#efece6; --code-bg:#f2eee6; --accent:#b3362a;
+    --font-sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Inter,Roboto,sans-serif;
+    --font-mono:"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  [data-theme="dark"]{
+    --paper:#14110e; --card:#1c1815; --ink:#f5f1ea; --muted:#8d857a; --line:#2e2822;
+    --pass:#4ec48a; --pass-bg:#16352a; --fail:#f2705f; --fail-bg:#3a1d19;
+    --warn:#e0a63c; --warn-bg:#38290f; --platform:#7fa3e8; --platform-bg:#1b2740;
+    --unknown:#9a9287; --unknown-bg:#26221d; --code-bg:#26221d; --accent:#f2705f;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{font-family:var(--font-sans);background:var(--paper);color:var(--ink);
+       padding:56px 32px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1180px;margin:0 auto;}
+  .kicker{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;
+          color:var(--muted);margin-bottom:14px;}
+  h1{font-size:42px;font-weight:800;letter-spacing:-.025em;line-height:1.08;margin-bottom:8px;}
+  .sub{font-size:15.5px;color:var(--muted);margin-bottom:34px;max-width:70ch;}
+  .demo-note{font-size:13px;line-height:1.6;color:var(--muted);background:var(--card);
+             border:1px dashed var(--line);border-radius:10px;padding:12px 16px;margin-bottom:30px;}
+  .bento{display:grid;grid-template-columns:230px 1fr 1fr;gap:14px;margin-bottom:34px;}
+  .tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;}
+  .tile .n{font-size:50px;font-weight:800;letter-spacing:-.035em;line-height:1;}
+  .tile .n small{font-size:22px;color:var(--muted);font-weight:700;letter-spacing:0;}
+  .tile .l{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+           color:var(--muted);margin-top:10px;}
+  .tile .h{font-size:23px;font-weight:800;letter-spacing:-.02em;line-height:1.2;}
+  .tile p{font-size:13.5px;line-height:1.6;color:var(--muted);margin-top:9px;}
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--card);}
+  table{width:100%;border-collapse:collapse;min-width:720px;}
+  th{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+     text-align:left;padding:14px 18px;border-bottom:1px solid var(--line);font-weight:700;}
+  td{padding:15px 18px;border-bottom:1px solid var(--line);font-size:14px;
+     line-height:1.6;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  .check{font-weight:700;white-space:nowrap;}
+  .check span{display:block;font-weight:500;font-size:12px;color:var(--muted);
+              margin-top:3px;white-space:normal;}
+  .v{display:inline-block;font-weight:800;font-size:10.5px;letter-spacing:.09em;
+     padding:5px 11px;border-radius:999px;white-space:nowrap;}
+  .v.pass{background:var(--pass-bg);color:var(--pass);}
+  .v.fail{background:var(--fail-bg);color:var(--fail);}
+  .v.partial{background:var(--warn-bg);color:var(--warn);}
+  .v.platform{background:var(--platform-bg);color:var(--platform);}
+  .v.unknown{background:var(--unknown-bg);color:var(--unknown);}
+  code{font-family:var(--font-mono);font-size:12.5px;background:var(--code-bg);
+       padding:2px 6px;border-radius:5px;word-break:break-word;}
+  h2{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-bottom:16px;}
+  .fixes{margin-top:34px;}
+  .fix{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--fail);
+       border-radius:12px;padding:17px 21px;margin-bottom:11px;font-size:14px;
+       line-height:1.65;color:var(--muted);}
+  .fix.ok{border-left-color:var(--pass);}
+  .fix b{display:block;color:var(--ink);font-size:15px;margin-bottom:3px;}
+  .foot{margin-top:38px;padding-top:22px;border-top:1px solid var(--line);
+        font-size:12.5px;color:var(--muted);line-height:1.75;max-width:78ch;}
+  .foot a{color:var(--accent);}
+  @media (max-width:860px){
+    body{padding:34px 18px;}
+    h1{font-size:31px;}
+    .bento{grid-template-columns:1fr;}
+    .tile .n{font-size:42px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="kicker">Securitymaxx · 10-point audit · 2026-08-13</div>
+<h1>PetPal Booking</h1>
+<div class="sub">petpal-booking.example · Vite + React + Supabase on Netlify · pet-sitting marketplace, live with real customers</div>
+<div class="demo-note"><b>Demo report.</b> PetPal Booking is a fictional application invented for this example. The findings are written the way real ones read, but no real product was audited to produce this page.</div>
+<div class="tablewrap">
+<table>
+  <tr><th style="width:220px">Check</th><th style="width:118px">Verdict</th><th>Evidence</th></tr>
+  <tr>
+    <td class="check">1 · Forces HTTPS<span>Redirect + HSTS</span></td>
+    <td><span class="v pass">PASS</span></td>
+    <td>Netlify default. <code>http://</code> → <code>301</code> → https. HSTS absent, which is worth adding, but the redirect is the part that matters and it works.</td>
+  </tr>
+  <tr>
+    <td class="check">2 · Passwords hashed<span>Or managed auth</span></td>
+    <td><span class="v fail">FAIL</span></td>
+    <td>Supabase Auth is used for login, but <code>src/pages/AdminSetup.jsx:64</code> also writes to a custom <code>staff</code> table with a <code>password</code> column, plain text, compared with <code>===</code> at <code>src/lib/staffAuth.js:22</code>. 14 rows currently in that table. Two auth systems, and the second one is the one that is wrong.</td>
+  </tr>
+  <tr>
+    <td class="check">3 · Bot protection<span>Every public POST</span></td>
+    <td><span class="v fail">FAIL</span></td>
+    <td>Six unauthenticated POST endpoints, none protected. <code>/api/booking-request</code> probed with 40 consecutive requests: all 40 accepted, all 40 wrote a row and sent an email. Nothing rate limits, nothing challenges, nothing deduplicates.</td>
+  </tr>
+  <tr>
+    <td class="check">4 · Sessions expire<span>Finite TTL + rotation</span></td>
+    <td><span class="v fail">FAIL</span></td>
+    <td>The Supabase session is bypassed for staff. <code>src/lib/staffAuth.js:39</code> signs its own token with <code>jwt.sign(payload, SECRET)</code> and no <code>expiresIn</code>, then stores it in <code>localStorage</code>. Decoded a live token: no <code>exp</code> claim. These never expire and cannot be revoked.</td>
+  </tr>
+  <tr>
+    <td class="check">5 · CSRF protection<span>Tokens or SameSite</span></td>
+    <td><span class="v partial">PARTIAL</span></td>
+    <td>Reads are Bearer-token from localStorage, which is not CSRF-reachable, so most of the surface is incidentally safe. But <code>/api/cancel-booking</code> accepts a plain form POST authenticated by a cookie set at <code>src/lib/staffAuth.js:47</code> with no <code>SameSite</code> attribute. One route, real exposure.</td>
+  </tr>
+  <tr>
+    <td class="check">6 · Reset links one-time<span>TTL ≤ 1h, consumed</span></td>
+    <td><span class="v fail">FAIL</span></td>
+    <td><code>api/reset.js:31</code> builds the reset link as <code>md5(email + JWT_SECRET)</code>. Deterministic: the same address always produces the same link, it never expires, and it is reusable forever. Anyone who learns the secret can mint a takeover link for any address.</td>
+  </tr>
+  <tr>
+    <td class="check">7 · Scoped DB key<span>Anon in browser only</span></td>
+    <td><span class="v fail">FAIL</span></td>
+    <td>The service-role key is in the production bundle. <code>.env</code> sets <code>VITE_SUPABASE_SERVICE_KEY</code>, and the <code>VITE_</code> prefix means Vite inlines it at build time. Found in the deployed asset <code>assets/index-8f21ac.js</code> (redacted here, value verified). Row-level security is also off on 7 of 9 tables, so this key reads and writes everything, including the plaintext password column from check 2. <b>Rotate immediately — this key has been served to every visitor since deploy.</b></td>
+  </tr>
+  <tr>
+    <td class="check">8 · Clean logs<span>No credentials logged</span></td>
+    <td><span class="v fail">FAIL</span></td>
+    <td><code>api/login.js:12</code> is <code>console.log("login attempt", req.body)</code>, which prints the submitted password into Netlify function logs on every attempt. Two more instances of the same shape at <code>api/reset.js:18</code> and <code>api/staff-invite.js:26</code>.</td>
+  </tr>
+  <tr>
+    <td class="check">9 · Billing alerts<span>Cap on every backend</span></td>
+    <td><span class="v fail">FAIL</span></td>
+    <td>No cap anywhere. The Resend key sends on an unauthenticated route (check 3), and the OpenAI key backs a public "describe your pet" field with no auth and no limit — a scraper finding that endpoint runs the bill up unattended.</td>
+  </tr>
+  <tr>
+    <td class="check">10 · Automated backups<span>Ran, retained, restorable</span></td>
+    <td><span class="v fail">FAIL</span></td>
+    <td>Supabase free tier: no platform backups, confirmed on the billing page rather than assumed. No backup job in the repo, no dump on disk, no scheduled task. The database is also the only copy of every booking, and 4 of the 9 tables have no migration file, so the schema is not reconstructible from git either.</td>
+  </tr>
+</table>
+</div>
+<div class="foot">Scored with <a href="https://github.com/jtlgrowth/securitymaxx">securitymaxx</a> — 10 checks, evidence required. PASS counts 1, PARTIAL 0.5, everything else 0. An item that could not be verified is UNKNOWN and scores zero, so the number is a floor rather than an estimate.<br>Read-only audit: source and config were read, and live probes were ordinary HTTP requests. Nothing was exploited and nothing was written to. Secret values are redacted to file and line — these reports get forwarded.</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Securitymaxx scorecard · template (full)</title>
+<style>
+  :root{
+    --paper:#faf7f2; --card:#ffffff; --ink:#1a1613; --muted:#8a8378; --line:#e8e2d8;
+    --pass:#1d7a4c; --pass-bg:#e3f2e9; --fail:#b3362a; --fail-bg:#fae7e4;
+    --warn:#b07816; --warn-bg:#f7edd8; --platform:#3a5a9b; --platform-bg:#e8ecf5;
+    --unknown:#6f6961; --unknown-bg:#efece6; --code-bg:#f2eee6; --accent:#b3362a;
+    --font-sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Inter,Roboto,sans-serif;
+    --font-mono:"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  [data-theme="dark"]{
+    --paper:#14110e; --card:#1c1815; --ink:#f5f1ea; --muted:#8d857a; --line:#2e2822;
+    --pass:#4ec48a; --pass-bg:#16352a; --fail:#f2705f; --fail-bg:#3a1d19;
+    --warn:#e0a63c; --warn-bg:#38290f; --platform:#7fa3e8; --platform-bg:#1b2740;
+    --unknown:#9a9287; --unknown-bg:#26221d; --code-bg:#26221d; --accent:#f2705f;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{font-family:var(--font-sans);background:var(--paper);color:var(--ink);
+       padding:56px 32px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1180px;margin:0 auto;}
+  .kicker{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;
+          color:var(--muted);margin-bottom:14px;}
+  h1{font-size:42px;font-weight:800;letter-spacing:-.025em;line-height:1.08;margin-bottom:8px;}
+  .sub{font-size:15.5px;color:var(--muted);margin-bottom:34px;max-width:70ch;}
+  .demo-note{font-size:13px;line-height:1.6;color:var(--muted);background:var(--card);
+             border:1px dashed var(--line);border-radius:10px;padding:12px 16px;margin-bottom:30px;}
+  .bento{display:grid;grid-template-columns:230px 1fr 1fr;gap:14px;margin-bottom:34px;}
+  .tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;}
+  .tile .n{font-size:50px;font-weight:800;letter-spacing:-.035em;line-height:1;}
+  .tile .n small{font-size:22px;color:var(--muted);font-weight:700;letter-spacing:0;}
+  .tile .l{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+           color:var(--muted);margin-top:10px;}
+  .tile .h{font-size:23px;font-weight:800;letter-spacing:-.02em;line-height:1.2;}
+  .tile p{font-size:13.5px;line-height:1.6;color:var(--muted);margin-top:9px;}
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--card);}
+  table{width:100%;border-collapse:collapse;min-width:720px;}
+  th{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+     text-align:left;padding:14px 18px;border-bottom:1px solid var(--line);font-weight:700;}
+  td{padding:15px 18px;border-bottom:1px solid var(--line);font-size:14px;
+     line-height:1.6;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  .check{font-weight:700;white-space:nowrap;}
+  .check span{display:block;font-weight:500;font-size:12px;color:var(--muted);
+              margin-top:3px;white-space:normal;}
+  .v{display:inline-block;font-weight:800;font-size:10.5px;letter-spacing:.09em;
+     padding:5px 11px;border-radius:999px;white-space:nowrap;}
+  .v.pass{background:var(--pass-bg);color:var(--pass);}
+  .v.fail{background:var(--fail-bg);color:var(--fail);}
+  .v.partial{background:var(--warn-bg);color:var(--warn);}
+  .v.platform{background:var(--platform-bg);color:var(--platform);}
+  .v.unknown{background:var(--unknown-bg);color:var(--unknown);}
+  code{font-family:var(--font-mono);font-size:12.5px;background:var(--code-bg);
+       padding:2px 6px;border-radius:5px;word-break:break-word;}
+  h2{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-bottom:16px;}
+  .fixes{margin-top:34px;}
+  .fix{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--fail);
+       border-radius:12px;padding:17px 21px;margin-bottom:11px;font-size:14px;
+       line-height:1.65;color:var(--muted);}
+  .fix.ok{border-left-color:var(--pass);}
+  .fix b{display:block;color:var(--ink);font-size:15px;margin-bottom:3px;}
+  .foot{margin-top:38px;padding-top:22px;border-top:1px solid var(--line);
+        font-size:12.5px;color:var(--muted);line-height:1.75;max-width:78ch;}
+  .foot a{color:var(--accent);}
+  @media (max-width:860px){
+    body{padding:34px 18px;}
+    h1{font-size:31px;}
+    .bento{grid-template-columns:1fr;}
+    .tile .n{font-size:42px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="kicker">Securitymaxx · 10-point audit · YYYY-MM-DD</div>
+<h1>Surface name</h1>
+<div class="sub">domain · stack · one line on what this application is and who uses it</div>
+<div class="bento">
+  <div class="tile"><div class="n">0<small>/10</small></div><div class="l">Score</div></div>
+  <div class="tile"><div class="h">Verdict line</div>
+    <p>Two sentences. What the score means, and the one thing driving it. Written for someone who was
+    not in the room.</p></div>
+  <div class="tile"><div class="h">Second angle</div>
+    <p>The other thing worth knowing — the strongest part of the surface, or the pattern behind several
+    findings at once.</p></div>
+</div>
+<div class="tablewrap">
+<table>
+  <tr><th style="width:220px">Check</th><th style="width:118px">Verdict</th><th>Evidence</th></tr>
+  <tr>
+    <td class="check">1 · Forces HTTPS<span>Redirect + HSTS</span></td>
+    <td><span class="v unknown">UNKNOWN</span></td>
+    <td>&mdash;</td>
+  </tr>
+  <tr>
+    <td class="check">2 · Passwords hashed<span>Or managed auth</span></td>
+    <td><span class="v unknown">UNKNOWN</span></td>
+    <td>&mdash;</td>
+  </tr>
+  <tr>
+    <td class="check">3 · Bot protection<span>Every public POST</span></td>
+    <td><span class="v unknown">UNKNOWN</span></td>
+    <td>&mdash;</td>
+  </tr>
+  <tr>
+    <td class="check">4 · Sessions expire<span>Finite TTL + rotation</span></td>
+    <td><span class="v unknown">UNKNOWN</span></td>
+    <td>&mdash;</td>
+  </tr>
+  <tr>
+    <td class="check">5 · CSRF protection<span>Tokens or SameSite</span></td>
+    <td><span class="v unknown">UNKNOWN</span></td>
+    <td>&mdash;</td>
+  </tr>
+  <tr>
+    <td class="check">6 · Reset links one-time<span>TTL &le; 1h, consumed</span></td>
+    <td><span class="v unknown">UNKNOWN</span></td>
+    <td>&mdash;</td>
+  </tr>
+  <tr>
+    <td class="check">7 · Scoped DB key<span>Anon in browser only</span></td>
+    <td><span class="v unknown">UNKNOWN</span></td>
+    <td>&mdash;</td>
+  </tr>
+  <tr>
+    <td class="check">8 · Clean logs<span>No credentials logged</span></td>
+    <td><span class="v unknown">UNKNOWN</span></td>
+    <td>&mdash;</td>
+  </tr>
+  <tr>
+    <td class="check">9 · Billing alerts<span>Cap on every backend</span></td>
+    <td><span class="v unknown">UNKNOWN</span></td>
+    <td>&mdash;</td>
+  </tr>
+  <tr>
+    <td class="check">10 · Automated backups<span>Ran, retained, restorable</span></td>
+    <td><span class="v unknown">UNKNOWN</span></td>
+    <td>&mdash;</td>
+  </tr>
+</table>
+</div>
+<div class="fixes">
+  <h2>Fixes, ranked by blast radius</h2>
+  <div class="fix"><b>1 · Highest-impact fix · time estimate</b>
+    What to do, why it is first, and how to verify it is actually done. Ranked by blast radius, never by
+    how easy it is.</div>
+  <div class="fix ok"><b>Already handled · optional note</b>
+    Use the green variant for items that are fixed or deliberately accepted, so the reader can tell
+    resolved from outstanding at a glance.</div>
+</div>
+<div class="foot">Scored with <a href="https://github.com/jtlgrowth/securitymaxx">securitymaxx</a> — 10 checks, evidence required. PASS counts 1, PARTIAL 0.5, everything else 0. An item that could not be verified is UNKNOWN and scores zero, so the number is a floor rather than an estimate.<br>Read-only audit: source and config were read, and live probes were ordinary HTTP requests. Nothing was exploited and nothing was written to. Secret values are redacted to file and line — these reports get forwarded.</div>
+</div>
+</body>
+</html>

@@ -1,18 +1,18 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-marketplace-manifest.json",
-  "name": "agentkit",
+  "name": "jtl",
   "owner": {
     "name": "jtlgrowth",
     "url": "https://github.com/jtlgrowth"
   },
-  "description": "JTL AgentKit, installable as a Claude Code plugin.",
+  "description": "JTL Growth's Claude Code toolkit, installable as a plugin.",
   "plugins": [
     {
-      "name": "agentkit",
+      "name": "jtl",
       "source": "./",
-      "description": "Curated agents and skills for Claude Code, distilled from ruflo and audited — zero dependencies, no postinstall.",
+      "description": "Hire and scaffold AI employees, pressure-test plans, review security, plan goals, tune RAG, repair TDD. Curated and audited, zero dependencies.",
       "license": "MIT",
-      "keywords": ["agents", "skills", "claude-code", "multi-agent", "ruflo", "claude-flow"]
+      "keywords": ["agents", "skills", "claude-code", "multi-agent", "hiring", "security", "tdd", "ruflo"]
     }
   ]
 }
