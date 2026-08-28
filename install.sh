@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# JTL AgentKit — convenience installer.
+# JTL Toolkit convenience installer.
 #
 # This does NOT install Claude Code and does NOT fetch anything beyond this
 # repo. It just runs the two `claude plugin` commands for you, non-interactively
@@ -10,6 +10,16 @@
 #   ./install.sh
 #
 set -euo pipefail
+
+usage() {
+  sed -n '2,11p' "$0" | sed 's/^# \{0,1\}//'
+}
+
+case "${1-}" in
+  -h|--help) usage; exit 0 ;;
+  "") ;;
+  *) printf 'error: unknown argument: %s\n\n' "$1" >&2; usage >&2; exit 2 ;;
+esac
 
 MARKETPLACE="jtlgrowth/jtl"
 PLUGIN="jtl@jtl"
