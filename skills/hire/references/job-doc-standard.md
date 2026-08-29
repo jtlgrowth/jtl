@@ -16,7 +16,7 @@ and `hire` refuses to write a doc that misses one.
 | --- | --- | --- |
 | **Desk** | is this seat active, folded, or paused? | folded seats keep taking routed work |
 | **Runtime** | what model and effort does it run at? | cost is invisible until the bill |
-| **Job** | what does it *own* — the outcome, not the activity | the seat becomes a job title |
+| **Job** | what does it *own*, the outcome, not the activity | the seat becomes a job title |
 | **Inputs → outputs** | what arrives, what leaves, where it lands | nobody can point at its work |
 | **Routed when** | the conditions that send work here | everything routes to the generalist |
 | **Quality bar** | what good looks like, checkably, and who checks | unreviewed output ships |

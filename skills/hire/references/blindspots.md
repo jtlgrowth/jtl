@@ -1,13 +1,13 @@
 # Why batches B and C exist
 
-Batch A — name, job, department — gets asked every time. Nobody forgets to name the thing.
+Batch A (name, job, department) gets asked every time. Nobody forgets to name the thing.
 
 Batches B and C are the questions that get skipped, and each one maps to a specific way a
 roster breaks. This file is the argument for not skipping them.
 
 ---
 
-## Q5 — model tier
+## Q5: model tier
 
 **Skipped because:** it feels like an optimisation you can do later.
 
@@ -15,7 +15,7 @@ roster breaks. This file is the argument for not skipping them.
 is paid for in extra tool calls, and every call's output re-enters the context window at
 full price on every subsequent turn. The observation that produced this rule: an
 open-ended audit on the cheap tier burned 66.7k tokens across 24 tool calls, against ~42k
-for comparable work on the top tier. Different tasks, one observation — treat the
+for comparable work on the top tier. Different tasks, one observation. Treat the
 magnitude as unmeasured and the mechanism as the durable part.
 
 **The fix:** cheap tier only for single-shot lookups, and only with a stated tool-call
@@ -23,13 +23,13 @@ ceiling in the prompt.
 
 ---
 
-## Q6 — tool scope
+## Q6: tool scope
 
 **Skipped because:** the new seat "obviously" needs the same tools as everyone else.
 
 **What breaks:** this is the one that fails catastrophically instead of quietly. A real
 dispatcher validates its permission table against its roster with a **set-equality**
-check — every seat must appear in both. Add a seat to the roster without adding its
+check: every seat must appear in both. Add a seat to the roster without adding its
 permission entry and the validation raises. The fallback is not "that one seat gets no
 tools". The fallback is **every seat drops to read-only**, silently, on the next tick.
 
@@ -41,7 +41,7 @@ trusting someone to remember the other half.
 
 ---
 
-## Q7 — inputs → outputs
+## Q7: inputs → outputs
 
 **Skipped because:** the role name feels self-explanatory.
 
@@ -51,7 +51,7 @@ cannot be argued about in either direction.
 
 ---
 
-## Q8 — reactive or standing
+## Q8: reactive or standing
 
 **Skipped because:** motors get added later, informally.
 
@@ -61,7 +61,7 @@ schedule is a deliberate second act.
 
 ---
 
-## Q9 — hard NEVERs
+## Q9: hard NEVERs
 
 **Skipped because:** "it wouldn't do that."
 
@@ -72,7 +72,7 @@ what its power is.
 
 ---
 
-## Q10 — quality bar and reviewer
+## Q10: quality bar and reviewer
 
 **Skipped because:** review feels like process overhead on a small team.
 
@@ -83,25 +83,25 @@ incident.
 
 ---
 
-## Q11 — escalation and unattended behavior
+## Q11: escalation and unattended behavior
 
 **Skipped because:** someone is always around.
 
 **What breaks:** someone is not always around. An agent with no unattended rule invents
-one at 3am, and the invented rule is usually "proceed" — because proceeding looks like
+one at 3am, and the invented rule is usually "proceed", because proceeding looks like
 helpfulness. The two honest answers are "record the state and stop" and "proceed, but only
 within this boundary". Both are fine. Silence is not.
 
 ---
 
-## Q12 — success metric and decommission condition
+## Q12: success metric and decommission condition
 
 **Skipped because:** you just hired them, why plan the ending.
 
 **What breaks:** rosters only grow. Every seat added is permanent by default, because
 folding one later requires someone to make a judgment call in public with no criteria to
-point at. A real example: a roster went 22 seats to 16 in a single restructure — six seats
-folded at once — and not one of them had a written decommission condition. The merge was
+point at. A real example: a roster went 22 seats to 16 in a single restructure (six seats
+folded at once) and not one of them had a written decommission condition. The merge was
 correct and it still cost a day of arguing, because the criteria had to be invented
 retroactively.
 

@@ -1,27 +1,27 @@
 # The twelve questions
 
 Ask in three batches. Every question is **options with a recommendation named**, never a
-blank prompt — the person hiring usually has not decided yet, and a blank prompt hands the
+blank prompt: the person hiring usually has not decided yet, and a blank prompt hands the
 work back to them. Propose, then let them correct.
 
 Each question names the answers-file field it fills.
 
 ---
 
-## Batch A — Identity
+## Batch A: Identity
 
 ### 1. Name and department → `name`, `display`, `department`, `role`
 
 Ask for the seat's name and which department it belongs to. Offer the departments from
 `discover.mjs` output as the options; if the config declares none, ask free-form.
 
-- `name` — lowercase slug, `[a-z][a-z0-9-]*`. This is the id used everywhere.
-- `display` — how it is written in prose. Defaults to the capitalised name.
-- `role` — two or three words. "Partnerships", "Security Desk", "Support".
+- `name`: lowercase slug, `[a-z][a-z0-9-]*`. This is the id used everywhere.
+- `display`: how it is written in prose. Defaults to the capitalised name.
+- `role`: two or three words. "Partnerships", "Security Desk", "Support".
 
 ### 2. What does it own? → `owns`
 
-**Not what it does — what it is accountable for.** The difference is the whole point:
+**Not what it does: what it is accountable for.** The difference is the whole point:
 employees own outcomes, task-runners do activities. "Writes partner emails" is an activity.
 "Every partner relationship reaching a yes or a no within two weeks" is an ownership.
 
@@ -54,16 +54,16 @@ goes in the job doc.
 
 ---
 
-## Batch B — Execution
+## Batch B: Execution
 
 ### 5. Model tier → `model`, `effort`, `runtime`, `preferredModel`
 
 Route by measured cost, not price tier:
 
-- **default tier** (e.g. `sonnet`) — almost everything.
-- **top tier** (e.g. `opus`) — judgment only: architecture, security, money, or gating
+- **default tier** (e.g. `sonnet`): almost everything.
+- **top tier** (e.g. `opus`): judgment only: architecture, security, money, or gating
   another agent's output.
-- **cheap tier** (e.g. `haiku`) — single-shot lookups *with a stated tool-call ceiling*.
+- **cheap tier** (e.g. `haiku`): single-shot lookups *with a stated tool-call ceiling*.
   Without a ceiling a weak model pays for thin planning with extra tool calls, and every
   call's output re-enters context at full price on every later turn.
 
@@ -73,14 +73,14 @@ Route by measured cost, not price tier:
 
 What may this seat touch? Offer the shapes, not a checkbox list:
 
-- **Read-only** — read, search, fetch. Nothing mutates. Correct for research, audit, QA.
-- **Read + write** — plus file edits. The default for builders.
-- **Full** — plus shell. Only when the job genuinely needs to run things.
-- **Money / production** — call it out explicitly; it usually wants read-only plus an
+- **Read-only**: read, search, fetch. Nothing mutates. Correct for research, audit, QA.
+- **Read + write**: plus file edits. The default for builders.
+- **Full**: plus shell. Only when the job genuinely needs to run things.
+- **Money / production**: call it out explicitly; it usually wants read-only plus an
   escalation path rather than write access.
 
 This is the surface most likely to be forgotten and the most likely to fail closed. If the
-config declares a `set-equality` guard on it, a missing entry does not break the new seat —
+config declares a `set-equality` guard on it, a missing entry does not break the new seat:
 it breaks **every** seat.
 
 ### 7. Inputs → outputs → `inputs`, `outputs`
@@ -90,17 +90,17 @@ seat is a job title, not a job.
 
 ### 8. Reactive or standing → `cadence`, `cadenceDetail`, `motor`
 
-- **reactive** — runs only on routed work. The default.
-- **motor** — has standing work on a schedule. Sets `motor: true`, which generates a
+- **reactive**: runs only on routed work. The default.
+- **motor**: has standing work on a schedule. Sets `motor: true`, which generates a
   disabled motor script. Ask for the cadence in words (`cadenceDetail`).
 
 ---
 
-## Batch C — Boundaries and blindspots
+## Batch C: Boundaries and blindspots
 
 ### 9. Hard NEVERs → `nevers`, `boundaries`
 
-What must this seat refuse **even when asked directly**? Not preferences — refusals.
+What must this seat refuse **even when asked directly**? Not preferences: refusals.
 "Never moves money." "Never signs a contract." "Never commits an engineering date."
 
 Propose three drawn from the role's obvious blast radius. A seat with no NEVERs either has
@@ -108,7 +108,7 @@ no power or has not been thought about.
 
 ### 10. Quality bar and reviewer → `qualityBar`, `qa`
 
-What does good look like, in a form someone else can check? And **who reviews it** — a
+What does good look like, in a form someone else can check? And **who reviews it**: a
 named reviewer, self-review only, or the owner. "Self-review only" is a legitimate answer;
 leaving it unanswered is not.
 
@@ -116,8 +116,8 @@ leaving it unanswered is not.
 
 Two halves, both required:
 
-- Blocked or uncertain — who does it go to, and at what threshold?
-- **Nobody awake** — what does it do then? The honest answers are "records the state and
+- Blocked or uncertain: who does it go to, and at what threshold?
+- **Nobody awake**: what does it do then? The honest answers are "records the state and
   stops" or "proceeds within this explicit boundary". An agent with no unattended rule
   invents one at 3am.
 
@@ -140,7 +140,7 @@ Two halves, both required:
   "desk": "ACTIVE",                  // status line for the job doc
   "runtime": "sonnet / medium effort",
 
-  "owns": "…",                       // Q2 — accountability, one sentence
+  "owns": "…",                       // Q2: accountability, one sentence
   "description": "…",                // one-line summary for the definition file
   "label": "Partnerships",           // Q4
   "keywords": ["…"],                 // Q4

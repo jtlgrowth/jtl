@@ -25,16 +25,16 @@ node "<skill-dir>/scripts/setup.mjs" --host codex --show
 
 Use `--host claude` only when running inside Claude Code.
 
-Exit 0 and a block printed: they have run this before — say so, show the name, and ask
+Exit 0 and a block printed: they have run this before, say so, show the name, and ask
 whether to keep it or change it. Exit 1: fresh install, go straight to the questions.
 
-### 2. Three questions — options with a recommendation, never blank prompts
+### 2. Three questions: options with a recommendation, never blank prompts
 
 Use the host's structured-question tool. One batch, all three at once.
 
 **Q1 · Name.** "What do you want to call it?" Offer **Ana** (recommended), **Max**,
 **Vee**, and let them type their own. One word, letters only. Say why the name matters:
-every reply will start with `<Name> —`, so a reply without it means the rules did not load.
+every reply will start with `<Name>:`, so a reply without it means the rules did not load.
 
 **Q2 · Voice.** "How should it talk to you?" Offer:
 - **English, short and direct** (recommended) → `--lang english --tone direct`
@@ -61,13 +61,13 @@ node "<skill-dir>/scripts/setup.mjs" --host codex --name Ana --lang english --to
 ```
 
 Prints CREATED / APPENDED / REPLACED and the block that landed. `--dry-run` previews
-without writing if the user wants to see it first; on a first run, just write — it is three
+without writing if the user wants to see it first; on a first run, just write: it is three
 lines they asked for, and they can read the file.
 
 ### 4. Report, and prove it
 
 Say where the file is. Then tell them the proof: **start a fresh host session and send any
-message; the reply starts with `<Name> —`.** Codex reads its global `AGENTS.md` once per
+message; the reply starts with `<Name>:`.** Codex reads its global `AGENTS.md` once per
 launched session, so an already-open session must be restarted. Close with one line:
 "Tell it a fact about your business and it will save it for next time."
 
@@ -82,5 +82,5 @@ launched session, so an already-open session must be restarted. Close with one l
 
 ## Files
 
-- `scripts/setup.mjs` — `--show`, write, `--remove`, `--dry-run`
-- `test/tests.mjs` — `node skills/setup/test/tests.mjs`
+- `scripts/setup.mjs`: `--show`, write, `--remove`, `--dry-run`
+- `test/tests.mjs`: `node skills/setup/test/tests.mjs`

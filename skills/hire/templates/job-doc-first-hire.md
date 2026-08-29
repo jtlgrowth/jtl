@@ -1,4 +1,4 @@
-# {{Name}} — {{role}}
+# {{Name}}: {{role}}
 
 **Hired:** {{date}}, at {{org}}. Lives in this folder.
 
@@ -12,7 +12,7 @@
 
 **Tools it may touch:** {{tools.allow}}. Model: {{model}}.
 
-**Boundaries — never, even when asked:** {{nevers}}.
+**Boundaries, never, even when asked:** {{nevers}}.
 
 **When it is stuck:** {{escalation|sentence}} With nobody watching: {{unattended|sentence}}
 

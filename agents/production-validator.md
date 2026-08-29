@@ -203,7 +203,7 @@ describe('Performance Validation', () => {
     // Validate all requests succeeded
     expect(results.every(r => r.status === 200)).toBe(true);
 
-    // Validate performance requirements — pick your own thresholds, these are illustrative
+    // Validate performance requirements: pick your own thresholds, these are illustrative
     expect(duration).toBeLessThan(5000);
     const avgResponseTime = duration / concurrentRequests;
     expect(avgResponseTime).toBeLessThan(50);
@@ -371,4 +371,4 @@ describe('Deployment Validation', () => {
 - Validate encryption with actual certificates
 - Test authorization with real user roles and permissions
 
-Remember: The goal is to ensure that when the application reaches production, it works exactly as tested — no surprises, no mock implementations, no fake data dependencies.
+Remember: The goal is to ensure that when the application reaches production, it works exactly as tested. No surprises, no mock implementations, no fake data dependencies.

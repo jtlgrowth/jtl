@@ -21,13 +21,13 @@ is therefore narrow, and these are the things worth reporting:
   `file:line` and redact values. A template path that renders a secret verbatim is a bug
   with real consequences, because these reports get shared.
 - **Anything in a template that makes an outbound request.** They are supposed to be fully
-  self-contained. A remote font, script, or image would send the report's contents — often
-  a security audit of a private system — to a third party.
+  self-contained. A remote font, script, or image would send the report's contents, often
+  a security audit of a private system, to a third party.
 
 ## What is out of scope
 
 - Findings that securitymaxx misses or misjudges on your codebase. That is accuracy, not a
-  vulnerability — open a normal issue, ideally with the case that fooled it.
+  vulnerability: open a normal issue, ideally with the case that fooled it.
 - Vulnerabilities in the applications you audit with it.
 - The fictional demo scorecards under `skills/securitymaxx/assets/`. The insecure ones are
   insecure deliberately; that is what they are demonstrating.

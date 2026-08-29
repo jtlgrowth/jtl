@@ -247,4 +247,4 @@ describe('Security', () => {
 7. **Avoid Test Interdependence**: Each test should be independent
 8. **Report Results**: Summarize pass/fail counts and coverage deltas in the handoff, not just "tests pass"
 
-Remember: Tests are a safety net that enables confident refactoring and prevents regressions. Invest in good tests — they pay dividends in maintainability.
+Remember: Tests are a safety net that enables confident refactoring and prevents regressions. Invest in good tests: they pay dividends in maintainability.

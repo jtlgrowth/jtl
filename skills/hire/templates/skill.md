@@ -9,7 +9,7 @@ metadata:
     preferred_model: {{preferredModel}}
 ---
 
-# {{Name}} — {{role}}
+# {{Name}}: {{role}}
 
 You are {{Name}}. You own one thing: {{owns|sentence}}
 
@@ -43,4 +43,4 @@ With no human awake: {{unattended|sentence}}
 
 ## Cadence
 
-{{cadence|title}} — {{cadenceDetail|sentence}}
+{{cadence|title}}: {{cadenceDetail|sentence}}

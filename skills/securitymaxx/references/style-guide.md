@@ -3,7 +3,7 @@
 Design tokens for the scorecard. Every template reads these from a single `:root` block,
 so changing them here changes every report you generate.
 
-Edit this file directly, or let the skill fill it in from your website — see
+Edit this file directly, or let the skill fill it in from your website, see
 [Onboarding](#onboarding) below.
 
 ## Tokens
@@ -21,7 +21,7 @@ Edit this file directly, or let the skill fill it in from your website — see
 | `--platform` | `#3a5a9b` | `#7fa3e8` | PLATFORM verdicts |
 
 Two font stacks: `--font-sans` for everything, `--font-mono` for evidence, paths, and
-commands. Evidence is quoted material — it should look like it came from a terminal,
+commands. Evidence is quoted material: it should look like it came from a terminal,
 because it did.
 
 ## Rules
@@ -30,7 +30,7 @@ because it did.
 two things a reader looks for before reading a single word. Keep them clearly distinct from
 each other and from the page background, in both themes.
 
-**Never encode a verdict in colour alone.** Every pill also carries its word — `PASS`,
+**Never encode a verdict in colour alone.** Every pill also carries its word: `PASS`,
 `FAIL`, `PARTIAL`, `PLATFORM`, `UNKNOWN`. Roughly one in twelve men has some form of colour
 vision deficiency, and a red/green scorecard is exactly the worst case for it. The text
 label is not redundancy, it is the actual signal.
@@ -40,7 +40,7 @@ background. If a brand colour fails that after onboarding, adjust its lightness 
 use and keep the original for fills.
 
 **Evidence stays monospace and stays readable.** It is the most important column on the
-page. Do not shrink it below 12.5px to win an argument with a long line — let the cell
+page. Do not shrink it below 12.5px to win an argument with a long line, let the cell
 wrap instead.
 
 ## Onboarding
@@ -55,7 +55,7 @@ The skill will:
 
 1. Fetch the homepage.
 2. Extract the dominant palette and the font stack in use.
-3. Map what it found onto the semantic roles above — background to `--paper`, body text to
+3. Map what it found onto the semantic roles above: background to `--paper`, body text to
    `--ink`, the primary action colour to `--accent`, and so on.
 4. Derive `--pass` / `--fail` / `--warn` if the brand has no obvious candidates, keeping
    them distinguishable rather than forcing them to match.

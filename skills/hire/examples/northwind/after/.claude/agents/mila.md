@@ -1,6 +1,6 @@
 ---
 name: mila
-description: Owns the support queue — triage, refunds, and escalation to engineering.
+description: Owns the support queue: triage, refunds, and escalation to engineering.
 model: sonnet
 tools: Read, Grep, Glob, WebFetch
 ---

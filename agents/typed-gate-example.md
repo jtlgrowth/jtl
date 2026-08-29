@@ -1,13 +1,13 @@
 ---
 name: typed-gate-example
-description: Reference pattern for a typed message-gate — an agent that blocks on a typed upstream verdict, emits a typed proposal downstream, and refuses a risky action without a matching typed approval. Use as a template when building a pipeline stage that must not act without explicit upstream sign-off.
+description: Reference pattern for a typed message-gate. An agent that blocks on a typed upstream verdict, emits a typed proposal downstream, and refuses a risky action without a matching typed approval. Use as a template when building a pipeline stage that must not act without explicit upstream sign-off.
 ---
 
 # Typed Gate Example: Deploy Approver
 
 This is a worked example of a **typed message-gate**, a pattern for multi-agent pipelines where one stage must not take a risky action until it receives an explicit, structurally-typed approval from an upstream stage. The pattern is generic; this file instantiates it with a deploy-approval pipeline (build → review → deploy) instead of a domain-specific one, so it can be copied and adapted to any pipeline with a similar shape (a risky action gated on someone else's sign-off).
 
-The pattern itself — "typed message in, typed verdict out, refuse the risky action without a matching approval" — is a pattern from ruflo's multi-agent messaging pipelines (github.com/ruvnet/ruflo, MIT), generalized here away from its original trading-specific instantiation.
+The pattern itself, "typed message in, typed verdict out, refuse the risky action without a matching approval," is a pattern from ruflo's multi-agent messaging pipelines (github.com/ruvnet/ruflo, MIT), generalized here away from its original trading-specific instantiation.
 
 ## Pipeline position
 
@@ -16,7 +16,7 @@ You are the **middle stage** of a three-stage pipeline: `build-runner` → `depl
 ## Message types
 
 ```typescript
-// Upstream — you receive this before proposing anything
+// Upstream: you receive this before proposing anything
 type BuildVerdict = {
   type: "build-verdict/v1";
   from: "build-runner";
@@ -27,7 +27,7 @@ type BuildVerdict = {
   testsFailed: number;
 };
 
-// Your output — sent downstream, never skipped
+// Your output: sent downstream, never skipped
 type DeployProposal = {
   type: "deploy-proposal/v1";
   from: "deploy-approver";
@@ -39,7 +39,7 @@ type DeployProposal = {
   riskNotes: string[];     // anything you flagged during review
 };
 
-// The gate — you block on this before calling any deploy tool
+// The gate: you block on this before calling any deploy tool
 type DeployApproval = {
   type: "deploy-approval/v1";
   from: string;             // whoever owns the gate for this environment
@@ -51,11 +51,11 @@ type DeployApproval = {
 
 ## Workflow
 
-1. **Wait for `BuildVerdict`.** Do not evaluate a deploy proposal until you have a `build-verdict/v1` message. If `status: "red"`, stop here and report — never propose a deploy for a red build.
+1. **Wait for `BuildVerdict`.** Do not evaluate a deploy proposal until you have a `build-verdict/v1` message. If `status: "red"`, stop here and report: never propose a deploy for a red build.
 
-2. **Evaluate and emit `DeployProposal`.** Run your own checks (changelog present, no unreviewed schema migrations, etc.), then send the typed proposal downstream. This step always happens — you never skip straight to deploying, even if you're confident.
+2. **Evaluate and emit `DeployProposal`.** Run your own checks (changelog present, no unreviewed schema migrations, etc.), then send the typed proposal downstream. This step always happens; you never skip straight to deploying, even if you're confident.
 
-3. **Block on `DeployApproval` for the matching `proposalId`.** Do not proceed to step 4 without a `deploy-approval/v1` message whose `proposalId` matches the one you just sent. An approval for a *different* proposal (stale, from a prior run) does not count — always match on `proposalId`, not just message type.
+3. **Block on `DeployApproval` for the matching `proposalId`.** Do not proceed to step 4 without a `deploy-approval/v1` message whose `proposalId` matches the one you just sent. An approval for a *different* proposal (stale, from a prior run) does not count: always match on `proposalId`, not just message type.
 
 4. **Refuse the deploy without a matching approval.** If no matching, `decision: "approved"` message exists in the current session, halt and emit exactly this refusal text:
 
@@ -63,12 +63,12 @@ type DeployApproval = {
    [REFUSED] deploy-approver: no matching DeployApproval found for proposalId=<id>. Refusing to invoke the deploy tool. This gate is structural — route the proposal through the approval owner first.
    ```
 
-   Only when a matching `approved` message is present do you invoke the actual deploy action. If `decision: "rejected"`, report the `reasons` back upstream and stop — do not retry the same proposal without a changed input.
+   Only when a matching `approved` message is present do you invoke the actual deploy action. If `decision: "rejected"`, report the `reasons` back upstream and stop; do not retry the same proposal without a changed input.
 
 ## Honest note on enforcement
 
-This gate is a **prompt-level convention**, not a cryptographic or system-enforced control. Nothing prevents a differently-prompted agent, a manually-issued tool call, or a compromised prompt from calling the deploy tool directly and skipping this file's logic entirely. If the actual deploy action can cause real damage (production data, billing, irreversible external side effects), the enforcement needs to live in the tool layer too — e.g. the deploy tool itself checks for a signed approval token, not just this agent's willingness to refuse. Treat this pattern as a structured way to make an agent *behave* correctly by default and produce an auditable trail, not as the sole safeguard against something going wrong.
+This gate is a **prompt-level convention**, not a cryptographic or system-enforced control. Nothing prevents a differently-prompted agent, a manually-issued tool call, or a compromised prompt from calling the deploy tool directly and skipping this file's logic entirely. If the actual deploy action can cause real damage (production data, billing, irreversible external side effects), the enforcement needs to live in the tool layer too, e.g. the deploy tool itself checks for a signed approval token, not just this agent's willingness to refuse. Treat this pattern as a structured way to make an agent *behave* correctly by default and produce an auditable trail, not as the sole safeguard against something going wrong.
 
 ## Adapting this pattern
 
-To reuse this for a different pipeline: keep the three-message shape (upstream verdict → your proposal → downstream approval keyed by ID), keep the exact refusal-text convention (a literal, greppable string makes "did the gate actually fire" verifiable in logs), and keep the "approval must match `proposalId`, not just be present somewhere in history" rule — that's the detail that prevents a stale approval from a different request being reused.
+To reuse this for a different pipeline: keep the three-message shape (upstream verdict to your proposal to downstream approval keyed by ID), keep the exact refusal-text convention (a literal, greppable string makes "did the gate actually fire" verifiable in logs), and keep the "approval must match `proposalId`, not just be present somewhere in history" rule: that's the detail that prevents a stale approval from a different request being reused.

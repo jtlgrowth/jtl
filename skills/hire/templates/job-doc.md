@@ -1,4 +1,4 @@
-# {{Name}} — {{role}}
+# {{Name}}: {{role}}
 
 **Desk:** {{desk}}
 
@@ -18,7 +18,7 @@
 
 **Escalation:** {{escalation|sentence}} With no human awake: {{unattended|sentence}}
 
-**Cadence:** {{cadence}} — {{cadenceDetail|sentence}}
+**Cadence:** {{cadence}}: {{cadenceDetail|sentence}}
 
 **Earns the seat when:** {{metric|sentence}}
 

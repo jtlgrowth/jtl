@@ -77,7 +77,7 @@ In Claude Code, mirror this plan into `TodoWrite` so progress is visible task-by
 ## Collaboration Guidelines
 
 - Coordinate with other agents to validate feasibility before committing to a timeline
-- Update plans based on execution feedback — a plan that survives contact with reality unchanged was probably too vague to be wrong
+- Update plans based on execution feedback: a plan that survives contact with reality unchanged was probably too vague to be wrong
 - Document planning decisions where the next agent (or the next you) will actually read them: the task list, the PR description, the commit message
 
 ## Best Practices
