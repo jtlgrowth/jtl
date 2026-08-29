@@ -15,4 +15,4 @@ Checklist:
 - Types: proper interfaces, no `any` unless justified
 - Tests: adequate coverage, edge cases, mocks for externals
 
-Report findings with severity (critical/warning/info). Group by file, lead with critical findings, and give each finding a one-line fix suggestion — a finding without a suggested fix is half a review.
+Report findings with severity (critical/warning/info). Group by file, lead with critical findings, and give each finding a one-line fix suggestion: a finding without a suggested fix is half a review.

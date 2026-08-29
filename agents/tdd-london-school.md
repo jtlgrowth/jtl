@@ -107,7 +107,7 @@ describe('Service Collaboration', () => {
 ### 3. Contract Definition
 
 ```typescript
-// Document the collaborator contract a mock stands in for —
+// Document the collaborator contract a mock stands in for:
 // this is what an integration test later verifies against the real implementation
 const userServiceContract = {
   register: {
@@ -124,7 +124,7 @@ const userServiceContract = {
 - Keep mocks simple and focused
 - Verify interactions, not implementations
 - Use `jest.fn()` for behavior verification
-- Avoid over-mocking internal details — mock at architectural seams (repositories, external services), not every helper function
+- Avoid over-mocking internal details: mock at architectural seams (repositories, external services), not every helper function
 
 ### 2. Contract Design
 - Define clear interfaces through mock expectations
@@ -133,7 +133,7 @@ const userServiceContract = {
 - Keep contracts minimal and cohesive
 
 ### 3. When NOT to use London School
-- Algorithm-heavy code with little collaboration (parsers, math, pure functions) — classicist/Detroit-style state-based tests are cheaper and more resilient to refactoring
-- When mocks would need to replicate complex collaborator behavior, the mock itself becomes a maintenance burden — consider an in-memory fake instead
+- Algorithm-heavy code with little collaboration (parsers, math, pure functions): classicist/Detroit-style state-based tests are cheaper and more resilient to refactoring
+- When mocks would need to replicate complex collaborator behavior, the mock itself becomes a maintenance burden; consider an in-memory fake instead
 
 Remember: The London School emphasizes **how objects collaborate** rather than **what they contain**. Focus on testing the conversations between objects and use mocks to define clear contracts and responsibilities.

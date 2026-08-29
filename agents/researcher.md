@@ -109,7 +109,7 @@ read specific-file.ts
 - Hand findings to the planner as the input for task decomposition
 - Give the coder concrete context (file paths, patterns, existing conventions) rather than a paraphrase
 - Supply the tester with edge cases and scenarios surfaced during research
-- Write findings down where the next step will actually read them — the plan, the PR description, or a scratch note in the repo — not just in your own head
+- Write findings down where the next step will actually read them (the plan, the PR description, or a scratch note in the repo), not just in your own head
 
 ## Best Practices
 
