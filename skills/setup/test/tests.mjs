@@ -107,7 +107,8 @@ check('alias: Mac/Linux launcher is written, executable, and runs claude', () =>
   const p = join(home, '.local', 'bin', 'ana');
   eq(r.alias.path, p);
   eq(readFileSync(p, 'utf8'), `#!/bin/sh\n# ${SHIM_MARK}: opens Claude Code as Ana\nexec claude "$@"\n`);
-  eq((statSync(p).mode & 0o111) !== 0, true, 'executable bit');
+  // Windows filesystems carry no executable bit; the .cmd case below covers that host.
+  if (process.platform !== 'win32') eq((statSync(p).mode & 0o111) !== 0, true, 'executable bit');
   eq(r.alias.onPath, false, 'reports ~/.local/bin missing from PATH');
   eq(/typing `ana`/.test(show({ home, host: 'claude' }).block), true, 'block names the alias');
   rmSync(home, { recursive: true, force: true });
@@ -149,9 +150,12 @@ check('alias: a word already on PATH is refused (posix and Windows PATHEXT)', ()
   writeFileSync(join(other, 'luna'), '#!/bin/sh\n'); chmodSync(join(other, 'luna'), 0o755);
   writeFileSync(join(other, 'kai.exe'), '');
   let threw = false;
-  try { setAlias({ alias: 'luna', name: 'Luna', host: 'claude' }, { home, platform: 'darwin', envPath: other }); } catch (e) { threw = /already runs/.test(e.message); }
-  eq(threw, true, 'posix clash');
-  threw = false;
+  // A posix PATH is ':'-separated, so it can only be simulated on a host whose paths have no drive letter.
+  if (process.platform !== 'win32') {
+    try { setAlias({ alias: 'luna', name: 'Luna', host: 'claude' }, { home, platform: 'darwin', envPath: other }); } catch (e) { threw = /already runs/.test(e.message); }
+    eq(threw, true, 'posix clash');
+    threw = false;
+  }
   try { setAlias({ alias: 'kai', name: 'Kai', host: 'claude' }, { home, platform: 'win32', envPath: other }); } catch (e) { threw = /already runs/.test(e.message); }
   eq(threw, true, 'windows .exe clash');
   eq(findOnPath('nobody-has-this', { envPath: other, platform: 'darwin' }), null);
