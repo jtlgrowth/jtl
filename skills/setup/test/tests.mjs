@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 // Dependency-free:  node skills/setup/test/tests.mjs
-import { mkdtempSync, existsSync, rmSync, symlinkSync } from 'node:fs';
+import { mkdtempSync, existsSync, rmSync, symlinkSync, readFileSync, writeFileSync, mkdirSync, statSync, chmodSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { renderBlock, merge, apply, remove, show, START, END } from '../scripts/setup.mjs';
+import { renderBlock, merge, apply, remove, show, setAlias, findOnPath, shimPath, START, END, SHIM_MARK } from '../scripts/setup.mjs';
 
 const SKILL = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 let pass = 0, fail = 0;
@@ -20,7 +20,7 @@ check('block carries the name, the canary line, and the memory rule', () => {
   const b = renderBlock({ name: 'Ana' });
   eq(b.startsWith(START), true);
   eq(b.trimEnd().endsWith(END), true);
-  eq(/Start every reply with `Ana —`/.test(b), true, 'canary');
+  eq(/Start every reply with `Ana:`/.test(b), true, 'canary');
   eq(/About my business/.test(b), true, 'memory section');
 });
 
@@ -48,8 +48,8 @@ check('re-run replaces the block in place and keeps the saved business facts', (
     .replace('(nothing saved yet)', 'Sells specialty coffee in Sta. Rosa. Open 7-5, closed Sunday.');
   const second = merge(first + '\n# after\n', renderBlock({ name: 'Max', lang: 'taglish' }));
   eq((second.match(new RegExp(START.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g')) || []).length, 1, 'one block');
-  eq(/`Max —`/.test(second), true, 'new name');
-  eq(/`Ana —`/.test(second), false, 'old name gone');
+  eq(/`Max:`/.test(second), true, 'new name');
+  eq(/`Ana:`/.test(second), false, 'old name gone');
   eq(/Sta\. Rosa/.test(second), true, 'business facts kept');
   eq(/^# mine\n/.test(second), true, 'text above kept');
   eq(/# after\n?$/.test(second), true, 'text below kept');
@@ -66,7 +66,7 @@ check('Codex default creates ~/.codex/AGENTS.md; show and remove round-trip', ()
   const r = apply({ name: 'Vee' }, { home });
   eq(r.created, true);
   eq(existsSync(join(home, '.codex', 'AGENTS.md')), true);
-  eq(show({ home }).block.includes('`Vee —`'), true);
+  eq(show({ home }).block.includes('`Vee:`'), true);
   eq(apply({ name: 'Vee', tone: 'warm' }, { home }).replaced, true);
   eq(remove({ home }).removed, true);
   eq(show({ home }).block, null);
@@ -77,7 +77,7 @@ check('Claude host remains supported at ~/.claude/CLAUDE.md', () => {
   const home = tmp();
   apply({ name: 'Ana' }, { home, host: 'claude' });
   eq(existsSync(join(home, '.claude', 'CLAUDE.md')), true);
-  eq(show({ home, host: 'claude' }).block.includes('`Ana —`'), true);
+  eq(show({ home, host: 'claude' }).block.includes('`Ana:`'), true);
   rmSync(home, { recursive: true, force: true });
 });
 
@@ -96,6 +96,117 @@ check('CLI: writes through a symlinked skill dir, then --show exits 0', () => {
   eq(/CREATED/.test(w.stdout), true, w.stdout);
   const s = spawnSync(process.execPath, [join(SKILL, 'scripts', 'setup.mjs'), '--show', '--home', home], { encoding: 'utf8' });
   eq(s.status, 0);
+  rmSync(home, { recursive: true, force: true });
+});
+
+// ---- alias: the launcher that lets them type `ana` instead of `claude` ----
+
+check('alias: Mac/Linux launcher is written, executable, and runs claude', () => {
+  const home = tmp();
+  const r = apply({ name: 'Ana', alias: 'ana' }, { home, host: 'claude', platform: 'darwin', envPath: '/usr/bin' });
+  const p = join(home, '.local', 'bin', 'ana');
+  eq(r.alias.path, p);
+  eq(readFileSync(p, 'utf8'), `#!/bin/sh\n# ${SHIM_MARK}: opens Claude Code as Ana\nexec claude "$@"\n`);
+  eq((statSync(p).mode & 0o111) !== 0, true, 'executable bit');
+  eq(r.alias.onPath, false, 'reports ~/.local/bin missing from PATH');
+  eq(/typing `ana`/.test(show({ home, host: 'claude' }).block), true, 'block names the alias');
+  rmSync(home, { recursive: true, force: true });
+});
+
+check('alias: Windows gets ana.cmd, CRLF, works in PowerShell and cmd, no profile touched', () => {
+  const home = tmp();
+  const bin = join(home, '.local', 'bin');
+  const r = apply({ name: 'Ana', alias: 'ana' }, { home, host: 'claude', platform: 'win32', envPath: `${bin};C:\\Windows` });
+  eq(r.alias.path, join(bin, 'ana.cmd'));
+  eq(readFileSync(r.alias.path, 'utf8'), `@rem ${SHIM_MARK}: opens Claude Code as Ana\r\n@claude %*\r\n`);
+  eq(r.alias.onPath, true);
+  eq(existsSync(join(home, 'Documents')), false, 'no PowerShell profile written');
+  rmSync(home, { recursive: true, force: true });
+});
+
+check('alias: Codex host launcher opens codex', () => {
+  const home = tmp();
+  const r = apply({ name: 'Vee', alias: 'vee' }, { home, platform: 'darwin', envPath: '' });
+  eq(/exec codex "\$@"/.test(readFileSync(r.alias.path, 'utf8')), true);
+  rmSync(home, { recursive: true, force: true });
+});
+
+check('alias: words a terminal already answers to are refused, and nothing is written', () => {
+  const home = tmp();
+  for (const w of ['test', 'cd', 'dir', 'cls', 'ls', 'iex', 'where', 'claude']) {
+    let threw = false;
+    try { apply({ name: 'Ana', alias: w }, { home, host: 'claude', platform: 'darwin', envPath: '' }); } catch (e) { threw = /--alias/.test(e.message); }
+    eq(threw, true, w);
+  }
+  eq(existsSync(join(home, '.claude', 'CLAUDE.md')), false, 'no block written on a refused alias');
+  eq(existsSync(join(home, '.local', 'bin')), false, 'no launcher written');
+  rmSync(home, { recursive: true, force: true });
+});
+
+check('alias: a word already on PATH is refused (posix and Windows PATHEXT)', () => {
+  const home = tmp();
+  const other = join(home, 'otherbin'); mkdirSync(other);
+  writeFileSync(join(other, 'luna'), '#!/bin/sh\n'); chmodSync(join(other, 'luna'), 0o755);
+  writeFileSync(join(other, 'kai.exe'), '');
+  let threw = false;
+  try { setAlias({ alias: 'luna', name: 'Luna', host: 'claude' }, { home, platform: 'darwin', envPath: other }); } catch (e) { threw = /already runs/.test(e.message); }
+  eq(threw, true, 'posix clash');
+  threw = false;
+  try { setAlias({ alias: 'kai', name: 'Kai', host: 'claude' }, { home, platform: 'win32', envPath: other }); } catch (e) { threw = /already runs/.test(e.message); }
+  eq(threw, true, 'windows .exe clash');
+  eq(findOnPath('nobody-has-this', { envPath: other, platform: 'darwin' }), null);
+  rmSync(home, { recursive: true, force: true });
+});
+
+check('alias: never overwrites a file /setup did not write', () => {
+  const home = tmp();
+  const p = shimPath(home, 'ana', 'darwin'); mkdirSync(dirname(p), { recursive: true });
+  writeFileSync(p, '#!/bin/sh\necho mine\n');
+  let threw = false;
+  try { setAlias({ alias: 'ana', name: 'Ana', host: 'claude' }, { home, platform: 'darwin', envPath: dirname(p) }); } catch (e) { threw = /did not write/.test(e.message); }
+  eq(threw, true);
+  eq(readFileSync(p, 'utf8'), '#!/bin/sh\necho mine\n', 'their file untouched');
+  rmSync(home, { recursive: true, force: true });
+});
+
+check('alias: re-run is byte-identical; a rename removes the old launcher; --remove cleans up', () => {
+  const home = tmp();
+  const bin = join(home, '.local', 'bin');
+  const o = { home, host: 'claude', platform: 'darwin', envPath: bin };
+  apply({ name: 'Ana', alias: 'ana' }, o);
+  const first = readFileSync(join(bin, 'ana'), 'utf8') + readFileSync(join(home, '.claude', 'CLAUDE.md'), 'utf8');
+  apply({ name: 'Ana', alias: 'ana' }, o);
+  eq(readFileSync(join(bin, 'ana'), 'utf8') + readFileSync(join(home, '.claude', 'CLAUDE.md'), 'utf8'), first, 'idempotent');
+  apply({ name: 'Max', alias: 'max' }, o);
+  eq(existsSync(join(bin, 'ana')), false, 'old launcher gone');
+  eq(existsSync(join(bin, 'max')), true, 'new launcher there');
+  const r = remove({ home, host: 'claude', platform: 'darwin' });
+  eq(r.aliasRemoved, true);
+  eq(existsSync(join(bin, 'max')), false, 'launcher removed with the block');
+  rmSync(home, { recursive: true, force: true });
+});
+
+check('upgrade: a block written with the old marker is replaced, not duplicated', () => {
+  const oldStart = '<!-- setup:start \u2014 written by /setup, edit freely, re-run /setup to replace -->';
+  const legacy = `# mine\n\n${oldStart}\n# Ana\n\n## About my business\n\nSells coffee.\n${END}\n`;
+  const out = merge(legacy, renderBlock({ name: 'Ana', alias: 'ana' }));
+  eq(out.includes(oldStart), false, 'old marker gone');
+  eq(out.split(START).length - 1, 1, 'one block');
+  eq(/Sells coffee\./.test(out), true, 'facts kept');
+});
+
+check('CLI: a real run makes a launcher that actually starts the target command', () => {
+  if (process.platform === 'win32') return;
+  const home = tmp();
+  const fake = join(home, 'fakebin'); mkdirSync(fake);
+  writeFileSync(join(fake, 'claude'), '#!/bin/sh\necho "fake claude $*"\n'); chmodSync(join(fake, 'claude'), 0o755);
+  const bin = join(home, '.local', 'bin');
+  const env = { ...process.env, PATH: `${bin}:${fake}:/usr/bin:/bin` };
+  const w = spawnSync(process.execPath, [join(SKILL, 'scripts', 'setup.mjs'), '--host', 'claude', '--name', 'Ana', '--alias', 'ana', '--home', home], { encoding: 'utf8', env });
+  eq(w.status, 0, w.stderr);
+  eq(/ALIAS/.test(w.stdout) && /type ana/.test(w.stdout), true, w.stdout);
+  const run = spawnSync('ana', ['--version'], { encoding: 'utf8', env });
+  eq(run.stdout.trim(), 'fake claude --version');
   rmSync(home, { recursive: true, force: true });
 });
 
