@@ -11,6 +11,7 @@ import { existsSync, readFileSync, writeFileSync, mkdirSync, chmodSync, unlinkSy
 import { join, dirname, resolve } from 'node:path';
 import { homedir } from 'node:os';
 import { fileURLToPath } from 'node:url';
+import { spawnSync } from 'node:child_process';
 import { realpathSync } from 'node:fs';
 
 export const START = '<!-- setup:start, written by /setup, edit freely, re-run /setup to replace -->';
@@ -159,12 +160,30 @@ export function setAlias({ alias, name, host = 'codex' }, { home = homedir(), pl
   const clash = findOnPath(alias, { envPath, platform, skip: path });
   if (clash) throw new Error(`--alias: "${alias}" already runs ${clash}, pick another word`);
   const body = renderShim({ name, host, platform });
+  let persisted = false;
   if (!dryRun) {
     mkdirSync(dirname(path), { recursive: true });
     writeFileSync(path, body);
     if (platform !== 'win32') chmodSync(path, 0o755);
+    // The Claude installer saves ~/.local/bin in the Windows user PATH; the Codex one
+    // does not (codex lives in npm's folder). Save it here so the alias works either way.
+    if (platform === 'win32' && process.platform === 'win32' && !onPath(dirname(path), envPath, platform)) {
+      persisted = persistWindowsUserPath(dirname(path));
+    }
   }
-  return { path, body, onPath: onPath(dirname(path), envPath, platform) };
+  return { path, body, onPath: onPath(dirname(path), envPath, platform), persisted };
+}
+
+// Add a folder to the Windows user PATH for every new window, once. Same logic the
+// installer uses: %VARS% expanded before comparing, case-insensitive, no duplicates.
+export function persistWindowsUserPath(dir) {
+  const d = dir.replace(/'/g, "''");
+  const ps = `$d='${d}'; $u=[Environment]::GetEnvironmentVariable('Path','User'); `
+    + `$e=@(($u -split ';') | Where-Object { $_ }); `
+    + `$k=@($e | ForEach-Object { [Environment]::ExpandEnvironmentVariables($_).TrimEnd('\\') }); `
+    + `if ($k -notcontains $d.TrimEnd('\\')) { [Environment]::SetEnvironmentVariable('Path', (@($e) + $d) -join ';', 'User') }`;
+  const r = spawnSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', ps], { encoding: 'utf8' });
+  return r.status === 0;
 }
 
 export function removeAlias(alias, { home = homedir(), platform = process.platform } = {}) {
@@ -219,7 +238,7 @@ export function show({ home = homedir(), host = 'codex' } = {}) {
 }
 
 function pathFix(dir, platform) {
-  if (platform === 'win32') return 'Run the setup line from jtlgrowth.com/setup again (it puts this folder on PATH), then open a new window.';
+  if (platform === 'win32') return `In PowerShell: [Environment]::SetEnvironmentVariable('Path', [Environment]::GetEnvironmentVariable('Path','User') + ';${dir}', 'User')   then open a new window.`;
   const rc = /zsh/.test(process.env.SHELL || '') ? '~/.zshrc' : '~/.bashrc';
   return `echo 'export PATH="$HOME/.local/bin:$PATH"' >> ${rc}   then open a new terminal.`;
 }
@@ -258,7 +277,8 @@ if (process.argv[1] && real(process.argv[1]) === real(fileURLToPath(import.meta.
     console.log(r.after.slice(findStart(r.after), r.after.indexOf(END) + END.length));
     if (r.alias) {
       console.log(`\n\x1b[32m${has('--dry-run') ? 'WOULD WRITE' : 'ALIAS'}\x1b[0m ${r.alias.path}`);
-      if (!r.alias.onPath) console.log(`\x1b[33mnot on PATH yet:\x1b[0m ${dirname(r.alias.path)}\n  ${pathFix(dirname(r.alias.path), process.platform)}`);
+      if (r.alias.persisted) console.log(`added ${dirname(r.alias.path)} to your PATH for new windows`);
+      else if (!r.alias.onPath) console.log(`\x1b[33mnot on PATH yet:\x1b[0m ${dirname(r.alias.path)}\n  ${pathFix(dirname(r.alias.path), process.platform)}`);
     }
     if (!has('--dry-run')) {
       const product = host === 'codex' ? 'Codex' : 'Claude Code';
