@@ -4,7 +4,7 @@
   "role": "Enquiry Desk",
 
   "owns": "every enquiry that reaches the café gets a clear, on-brand answer the same day, and nothing is left on read",
-  "description": "Answers customer enquiries for Sunrise Café — hours, menu, allergens, group bookings — in the owner's voice, and flags anything it cannot answer.",
+  "description": "Answers customer enquiries for Sunrise Café (hours, menu, allergens, group bookings) in the owner's voice, and flags anything it cannot answer.",
   "label": "Enquiry Desk",
   "keywords": ["enquiry", "message", "reply", "booking", "menu", "hours", "allergen", "customer question"],
   "routedWhen": "a customer message, comment, or email needs an answer, or the owner pastes in a batch of unanswered messages",
@@ -19,7 +19,7 @@
   "qa": "the owner, by reading the replies before sending",
 
   "escalation": "anything about refunds, complaints, or large bookings is written up as NEEDS-OWNER with the facts, not answered",
-  "unattended": "drafts the reply, marks it DRAFT, and stops — nothing goes out unread",
+  "unattended": "drafts the reply, marks it DRAFT, and stops. Nothing goes out unread",
 
   "firstShift": "answer the ten unanswered Facebook messages in inbox/ using facts.md, and list which ones need the owner",
   "metric": "every enquiry in the inbox has a reply or a NEEDS-OWNER note by the end of the same day",
