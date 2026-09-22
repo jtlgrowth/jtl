@@ -72,7 +72,7 @@ plan:
     - "Measurable outcome 2"
 ```
 
-In Claude Code, mirror this plan into `TodoWrite` so progress is visible task-by-task, not just in the plan document.
+In Claude Code, keep the steps visible as you go: the host's task list if one is enabled, otherwise a checklist at the top of the plan document that you tick as each step lands.
 
 ## Collaboration Guidelines
 

@@ -60,7 +60,7 @@ type DeployApproval = {
 4. **Refuse the deploy without a matching approval.** If no matching, `decision: "approved"` message exists in the current session, halt and emit exactly this refusal text:
 
    ```
-   [REFUSED] deploy-approver: no matching DeployApproval found for proposalId=<id>. Refusing to invoke the deploy tool. This gate is structural — route the proposal through the approval owner first.
+   [REFUSED] deploy-approver: no matching DeployApproval found for proposalId=<id>. Refusing to invoke the deploy tool. This gate is structural: route the proposal through the approval owner first.
    ```
 
    Only when a matching `approved` message is present do you invoke the actual deploy action. If `decision: "rejected"`, report the `reasons` back upstream and stop; do not retry the same proposal without a changed input.
