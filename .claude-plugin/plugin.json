@@ -1,8 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "jtl",
-  "description": "JTL Growth's Claude Code toolkit: hiring and scaffolding AI employees, adversarial pressure-testing, security review, goal planning, RAG tuning and TDD repair. Zero dependencies, no postinstall.",
-  "version": "1.0.0",
+  "description": "JTL Growth's Claude Code toolkit: adversarial pressure-testing, security review, goal planning, RAG tuning and TDD repair. Zero dependencies, no postinstall.",
+  "version": "2.0.0",
   "author": {
     "name": "Jamz Jamorol",
     "url": "https://github.com/jtlgrowth"
@@ -10,5 +10,5 @@
   "homepage": "https://github.com/jtlgrowth/jtl",
   "repository": "https://github.com/jtlgrowth/jtl",
   "license": "MIT",
-  "keywords": ["agents", "skills", "claude-code", "multi-agent", "hiring", "security", "tdd", "ruflo"]
+  "keywords": ["agents", "skills", "claude-code", "multi-agent", "security", "tdd", "ruflo"]
 }

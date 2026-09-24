@@ -3,7 +3,7 @@
 **A curated set of agents and skills for [Claude Code](https://claude.com/claude-code),
 from [JTL Growth](https://github.com/jtlgrowth).**
 
-Four small kits, folded into one plugin so there is one thing to install and one name to
+Three small kits, folded into one plugin so there is one thing to install and one name to
 remember. Everything here is MIT licensed, has zero dependencies, and runs nothing in the
 background.
 
@@ -47,15 +47,8 @@ not run anything in the background. It just automates the two lines above.
 
 ## What's in it
 
-Eight skills. Every one is addressed with the `jtl:` prefix, so `/jtl:hire`, `/jtl:setup`,
-and so on.
-
-**Building a team**
-
-| Skill | What it does |
-|---|---|
-| `hire` | Interviews you, then scaffolds a new AI employee: job description, routing, tool scopes, memory pack. Writes every file atomically or none. |
-| `setup` | First-run onboarding for a fresh install. |
+Six skills. Every one is addressed with the `jtl:` prefix, so `/jtl:pressure-test`,
+`/jtl:goal-plan`, and so on.
 
 **Checking the work**
 

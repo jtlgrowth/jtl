@@ -10,9 +10,9 @@
     {
       "name": "jtl",
       "source": "./",
-      "description": "Hire and scaffold AI employees, pressure-test plans, review security, plan goals, tune RAG, repair TDD. Curated and audited, zero dependencies.",
+      "description": "Pressure-test plans, review security, plan goals, tune RAG, repair TDD. Curated and audited, zero dependencies.",
       "license": "MIT",
-      "keywords": ["agents", "skills", "claude-code", "multi-agent", "hiring", "security", "tdd", "ruflo"]
+      "keywords": ["agents", "skills", "claude-code", "multi-agent", "security", "tdd", "ruflo"]
     }
   ]
 }
