@@ -47,7 +47,7 @@ not run anything in the background. It just automates the two lines above.
 
 ## What's in it
 
-Six skills. Every one is addressed with the `jtl:` prefix, so `/jtl:pressure-test`,
+Seven skills. Every one is addressed with the `jtl:` prefix, so `/jtl:pressure-test`,
 `/jtl:goal-plan`, and so on.
 
 **Checking the work**
@@ -58,6 +58,12 @@ Six skills. Every one is addressed with the `jtl:` prefix, so `/jtl:pressure-tes
 | `security-review` | Reviews code for the mistakes that actually get exploited. |
 | `securitymaxx` | The longer security pass, with a false-positive discipline that drops pattern-matched noise instead of padding the report. |
 | `tdd-repair` | Repairs a broken test suite without deleting the tests that were telling you something. |
+
+**Before the work**
+
+| Skill | What it does |
+|---|---|
+| `wdym` | Reads a vague prompt before any tool runs: one card with a rewritten brief, then the build. Clear prompts run untouched. Invoke it as `/jtl:wdym`; for the automatic check on every prompt, install the standalone [jtlgrowth/wdym](https://github.com/jtlgrowth/wdym). |
 
 **Planning and retrieval**
 
